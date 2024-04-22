@@ -12,10 +12,10 @@ function ThemeToggle() {
     return (
         <Wrapper onClick={toggleDarkTheme}>
             {isDarkTheme ? (
-                <BsFillSunFill />
+                <BsFillSunFill className='toggle-icon' />
             ) : 
             (
-            <BsFillMoonFill />
+            <BsFillMoonFill className='toggle-icon' />
             )}
         </Wrapper>
     );

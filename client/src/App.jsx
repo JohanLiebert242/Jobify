@@ -35,7 +35,7 @@ import {loader as StatsLoader} from './pages/Stats';
 
 const checkDefaultTheme = () => {
     const isDarkTheme = localStorage.getItem('theme') === 'true';
-    document.body.classList.toggle('dark-theme');
+    document.body.classList.toggle('dark-theme', isDarkTheme);
     return isDarkTheme;
 }
 
