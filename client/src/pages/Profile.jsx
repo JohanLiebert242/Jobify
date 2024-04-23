@@ -12,7 +12,7 @@ import customFetch from "../utils/customFetch";
 
 //Loader && Action
 
-export const action = async({request}) => {
+export const action = (queryClient) => async({request}) => {
     const formData = await request.formData();
 
     const file = formData.get('avatar');
@@ -23,6 +23,7 @@ export const action = async({request}) => {
 
     try {
         await customFetch.patch('/users/update-user', formData);
+        queryClient.invalidateQueries(['user']); 
         toast.success("Profile updated successfully");
         return redirect('/dashboard');
     } catch (error) {
@@ -42,7 +43,7 @@ function Profile() {
                 <h4 className="form-title">Profile</h4>
                 <div className="form-center">
                     <div className="form-row">
-                        <label htmlFor="image" className="form-label">
+                        <label htmlFor="avatar" className="form-label">
                             Select An Image File (Max 0.5 MB)
                         </label>
                         <input

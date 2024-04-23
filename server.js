@@ -9,6 +9,8 @@ import mongoose from 'mongoose';
 import 'express-async-errors';
 import cookieParser from 'cookie-parser';
 import cloudinary from 'cloudinary';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize'
 
 //Routes
 import jobRouter from './routes/jobRoutes.js';
@@ -24,11 +26,12 @@ import { dirname } from 'path';
 import errorHandler from './middlewares/errorHandler.js';
 import { authenticateUser } from './middlewares/auth.js';
 
+
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME, 
     api_key: process.env.CLOUD_API_KEY,
     api_secret: process.env.CLOUD_API_SECRET
-})
+});
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -39,6 +42,8 @@ if(process.env.NODE_ENV === 'development') {
 app.use(express.static(path.resolve(__dirname, "./client/dist")));
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet());
+app.use(mongoSanitize());
 
 app.get('/', (req, res) => {
     res.send("Hello world");
@@ -53,11 +58,10 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', authenticateUser, userRouter);
 
 app.get('*', (req, res) => {
-    res.send(path.resolve(__dirname, "./public", "./client/dist"));
-})
+    res.sendFile(path.resolve(__dirname, './client/dist', 'index.html'));
+  });
 
 app.use(errorHandler);
-
 
 const port = process.env.PORT || 5100;
 

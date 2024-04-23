@@ -2,7 +2,7 @@
 import { Form, Link, useSubmit } from "react-router-dom";
 
 //Components
-import { FormRow, FormSelect, SubmitBtn } from "../components";
+import { FormRow, FormSelect} from "../components";
 import { useAllJobsContext } from "../pages/AllJobs";
 
 //Utils
@@ -64,7 +64,7 @@ function SearchContainer() {
                         defaultValue={searchValues.sort}
                         name="sort"
                         label="Sort"
-                        onChange={(e) => submit(e.currentTarget.values)}
+                        onChange={(e) => submit(e.currentTarget.form)}
                     />
                     <Link
                         className="btn form-btn delete-btn"
@@ -72,7 +72,6 @@ function SearchContainer() {
                     >
                         Reset Search Values
                     </Link>
-                    <SubmitBtn formBtn />
                 </div>
             </Form>
         </Wrapper>

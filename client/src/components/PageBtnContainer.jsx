@@ -15,7 +15,7 @@ function PageBtnContainer() {
     const {
         data: { numOfPages, currentPage },
     } = useAllJobsContext();
-    const pageNumbers = Array.from({ length: numOfPages }, (_id, index) => {
+    const pages = Array.from({ length: numOfPages }, (_id, index) => {
         return index + 1;
     });
 
@@ -64,7 +64,7 @@ function PageBtnContainer() {
             }))
         }
 
-        if(currentPage !== 1 && currentPage != 10) {
+        if(currentPage !== 1 && currentPage != numOfPages) {
             //Current page
             pageButtons.push(addPageButton({
                 pageNumber: currentPage,
@@ -84,7 +84,6 @@ function PageBtnContainer() {
         if(currentPage < numOfPages - 2) {
             pageButtons.push(<span className="page-btn dots" key="dots+1">. . .</span>)
         }
-
 
         //Last btn
         pageButtons.push(

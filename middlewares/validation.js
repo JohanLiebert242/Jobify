@@ -98,6 +98,7 @@ export const validateUserInput = validationErrors([
         .notEmpty()
         .withMessage("Please provide email")
         .isEmail()
+        .withMessage("Please provide email format")
         .custom(async (email, {req}) => {
             const user = await User.findOne({ email });
             if (user && req.user.userId !== user._id.toString()) {
