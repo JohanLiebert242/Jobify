@@ -30,10 +30,9 @@ function Login() {
     const navigate = useNavigate();
     const loginDemoUser = async() => {
         const data = {
-            email : "test@gmail.com",
-            password : "secret123"
+            email : "tester@gmail.com",
+            password : "0918083733"
         }
-
         try {
             await customFetch.post('/auth/login', data);
             toast.success("Take a test drive");
