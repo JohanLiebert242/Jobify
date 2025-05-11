@@ -2,14 +2,11 @@ import Job from "../models/Jobs.js";
 import { StatusCodes } from "http-status-codes";
 import mongoose from "mongoose";
 import day from "dayjs";
-import Jobs from "../models/Jobs.js";
 
 export const getAllJobs = async (req, res) => {
     const { search, jobStatus, jobType, sort } = req.query;
 
-    const queryObject = {
-        createdBy: req.user.userId,
-    };
+    const queryObject = {};
 
     if (search) {
         queryObject.$or = [
@@ -42,20 +39,24 @@ export const getAllJobs = async (req, res) => {
     //Set up pagination
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
-    
+
     //Explanation: In the first page, we skip 0 -> 10 jobs
-    // Second page, skip 10 -> skip 10 jobs in the first page 
+    // Second page, skip 10 -> skip 10 jobs in the first page
     const skip = (page - 1) * limit;
+
+    console.log("queryObject", queryObject);
 
     const jobs = await Job.find(queryObject)
         .sort(sortKey)
         .skip(skip)
-        .limit(limit)
-    
+        .limit(limit);
+
     const totalJobs = await Job.countDocuments(queryObject);
     const numOfPages = Math.ceil(totalJobs / limit);
 
-    return res.status(StatusCodes.OK).json({ totalJobs, numOfPages, currentPage: page ,jobs });
+    return res
+        .status(StatusCodes.OK)
+        .json({ totalJobs, numOfPages, currentPage: page, jobs });
 };
 
 export const getSingleJob = async (req, res) => {

@@ -2,7 +2,6 @@
 import { useLoaderData } from "react-router-dom";
 import { JobsContainer, SearchContainer } from "../components";
 import customFetch from "../utils/customFetch";
-import { toast } from "react-toastify";
 import { useContext, createContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -11,11 +10,11 @@ const allJobsQuery = (params) => {
 
     return {
         queryKey: [
-            'jobs',
-            search ?? '',
-            jobStatus ?? 'all',
-            jobType ?? 'all',
-            sort ?? 'newest',
+            "jobs",
+            search ?? "",
+            jobStatus ?? "all",
+            jobType ?? "all",
+            sort ?? "newest",
             page ?? 1,
         ],
         queryFn: async () => {
