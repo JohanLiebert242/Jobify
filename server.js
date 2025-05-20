@@ -43,15 +43,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
     helmet.contentSecurityPolicy({
-        useDefaults: true,
-        directives: {
-            "img-src": [
-                "https://mysitename.com",
-                "https://res.cloudinary.com/",
-            ],
-            upgradeInsecureRequests: [],
-        },
-        reportOnly: false,
+        "default-src": ["'self'"],
+        "base-uri": ["'self'"],
+        "font-src": ["'self'", "https:", "data:"],
+        "frame-ancestors": ["'self'"],
+        "img-src": ["'self'", "data:", "http://res.cloudinary.com"],
+        "script-src": ["'self'"],
+        "script-src-attr": ["'none'"],
+        "style-src": ["'self'", "https:", "'unsafe-inline'"],
     })
 );
 app.use(mongoSanitize());
