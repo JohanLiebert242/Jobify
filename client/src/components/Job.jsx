@@ -21,6 +21,8 @@ function Job({
     createdAt,
     jobStatus,
 }) {
+    console.log("jobStatus", jobStatus);
+
     const date = day(createdAt).format("MMM Do, YYYY");
     return (
         <Wrapper>
@@ -31,26 +33,43 @@ function Job({
                     <p>{company}</p>
                 </div>
             </header>
-                <div className="content">
-                    <div className="content-center">
-                        <JobInfo
-                            icon={<FaLocationArrow />}
-                            text={jobLocation}
-                        />
-                        <JobInfo icon={<FaCalendarAlt />} text={date} />
-                        <JobInfo icon={<FaBriefcase />} text={jobType} />
-                        <div className={`status ${jobStatus}`}>{jobStatus}</div>
+            <div className="content">
+                <div className="content-center">
+                    <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
+                    <JobInfo icon={<FaCalendarAlt />} text={date} />
+                    <JobInfo icon={<FaBriefcase />} text={jobType} />
+                    <div
+                        style={{
+                            backgroundColor:
+                                jobStatus === "pending"
+                                    ? "#fef3c7"
+                                    : jobStatus === "interviewed"
+                                    ? "#e0e8f9"
+                                    : "#ffeeee",
+                            color:
+                                jobStatus === "pending"
+                                    ? "#f59e0b"
+                                    : jobStatus === "interviewed"
+                                    ? "#647acb"
+                                    : "#d66a6a",
+                        }}
+                        className={`status ${jobStatus}`}
+                    >
+                        {jobStatus}
                     </div>
-
-                    <footer className="actions">
-                        <Link className="btn edit-btn" to={`../edit-job/${_id}`} >Edit</Link>
-                        <Form method="post" action={`../delete-job/${_id}`}>
-                            <button className="btn delete-btn" type="submit">
-                                Delete
-                            </button>
-                        </Form>
-                    </footer>
                 </div>
+
+                <footer className="actions">
+                    <Link className="btn edit-btn" to={`../edit-job/${_id}`}>
+                        Edit
+                    </Link>
+                    <Form method="post" action={`../delete-job/${_id}`}>
+                        <button className="btn delete-btn" type="submit">
+                            Delete
+                        </button>
+                    </Form>
+                </footer>
+            </div>
         </Wrapper>
     );
 }
