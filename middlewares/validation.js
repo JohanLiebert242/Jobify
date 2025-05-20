@@ -5,11 +5,10 @@ import { body, param, validationResult } from "express-validator";
 import {
     NotFoundError,
     BadRequestError,
-    UnauthenticatedError,
     UnauthorizedError,
 } from "../errors/customErrors.js";
 
-import { JOB_SORT_BY, JOB_TYPE, JOB_STATUS } from "../utils/constants.js";
+import { JOB_TYPE, JOB_STATUS } from "../utils/constants.js";
 
 //Models
 import Job from "../models/Jobs.js";
@@ -99,7 +98,7 @@ export const validateUserInput = validationErrors([
         .withMessage("Please provide email")
         .isEmail()
         .withMessage("Please provide email format")
-        .custom(async (email, {req}) => {
+        .custom(async (email, { req }) => {
             const user = await User.findOne({ email });
             if (user && req.user.userId !== user._id.toString()) {
                 throw new BadRequestError("Email already exists");
@@ -107,4 +106,3 @@ export const validateUserInput = validationErrors([
         }),
     body("location").notEmpty().withMessage("Please provide location"),
 ]);
-

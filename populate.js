@@ -8,32 +8,9 @@ import { readFile } from "fs/promises";
 import Job from "./models/Jobs.js";
 import User from "./models/User.js";
 
-const rl = createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
-
-const getEmail = () => {
-    return new Promise((resolve) => {
-        rl.question("Please enter the email: ", (email) => {
-            rl.close();
-            resolve(email.trim());
-        });
-    });
-};
-
 try {
-    const email = await getEmail();
-
-    console.log("email", email);
-
-    if (!email) {
-        throw new Error("Email cannot be empty");
-    }
-
     await mongoose.connect(process.env.MONGO_URL);
-
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: "johan@gmail.com" });
     const jsonJobs = JSON.parse(
         await readFile(new URL("./utils/mockData.json", import.meta.url))
     );

@@ -6,7 +6,12 @@ import day from "dayjs";
 export const getAllJobs = async (req, res) => {
     const { search, jobStatus, jobType, sort } = req.query;
 
-    const queryObject = {};
+    const queryObject =
+        req.user.role === "admin"
+            ? {}
+            : {
+                  createdBy: req.user.userId,
+              };
 
     if (search) {
         queryObject.$or = [
@@ -44,8 +49,6 @@ export const getAllJobs = async (req, res) => {
     // Second page, skip 10 -> skip 10 jobs in the first page
     const skip = (page - 1) * limit;
 
-    console.log("queryObject", queryObject);
-
     const jobs = await Job.find(queryObject)
         .sort(sortKey)
         .skip(skip)
@@ -82,7 +85,7 @@ export const updateJob = async (req, res) => {
 };
 
 export const deleteJob = async (req, res) => {
-    const deletedJob = await Job.findByIdAndDelete(req.params.id);
+    await Job.findByIdAndDelete(req.params.id);
 
     return res.status(StatusCodes.OK).json({ msg: "Job deleted" });
 };
@@ -130,6 +133,8 @@ export const showStats = async (req, res) => {
                 _id: { year, month },
                 count,
             } = item;
+            //$month in MongoDB starts from 1 to 12
+            //dayjs month starts from 0 to 11
             const date = day()
                 .month(month - 1)
                 .year(year)
